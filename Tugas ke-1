@@ -1,0 +1,32 @@
+// Mendefinisikan Kelas
+class Mobil {
+    constructor(merk_Mobil, warna_Mobil) {
+        this.merk_Mobil = merk_Mobil;
+        this.warna_Mobil = warna_Mobil;
+    }
+
+    // Metode
+    jalan() {
+        console.log(`${this.merk_Mobil} berwarna ${this.warna_Mobil} sedang berjalan.`);
+    }
+}
+
+// Pewarisan
+class MobilBalap extends Mobil {
+    constructor(merk_Mobil, warna_Mobil, kecepatanMaksimal_Mobil) {
+        super(merk_Mobil, warna_Mobil); // Memanggil konstruktor kelas induk
+        this.kecepatanMaksimal_Mobil = kecepatanMaksimal_Mobil;
+    }
+
+    // Overriding Metode
+    jalan() {
+        console.log(`${this.merk_Mobil} balap berwarna ${this.warna_Mobil} berjalan dengan kecepatan maksimal ${this.kecepatanMaksimal_Mobil} km/jam.`);
+    }
+}
+
+// Membuat Objek
+const mobil1 = new Mobil('Honda Supra', 'silver');
+mobil1.jalan(); // Output: Toyota berwarna merah sedang berjalan.
+
+const mobilBalap1 = new MobilBalap('Lamborgini', 'hitam', 350);
+mobilBalap1.jalan(); // Output: Ferrari balap berwarna hitam berjalan dengan kecepatan maksimal 350 km/jam.
