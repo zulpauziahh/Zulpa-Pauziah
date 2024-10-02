@@ -1,0 +1,71 @@
+class Mahasiswa {
+    constructor(nama, nim, nilai) {
+        this.nama = nama;  // Atribut publik
+        this.nim = nim;    // Atribut publik
+        let _nilai = nilai; // Atribut private menggunakan closure
+
+        // Getter untuk mengakses nilai
+        this.getNilai = function() {
+            return _nilai;
+        };
+
+        // Setter untuk mengubah nilai dengan validasi
+        this.setNilai = function(nilaiBaru) {
+            if (nilaiBaru >= 0 && nilaiBaru <= 100) {
+                _nilai = nilaiBaru;
+            } else {
+                console.log("Nilai harus antara 0 dan 100");
+            }
+        };
+    }
+}
+
+class MahasiswaView {
+    render(mahasiswa) {
+        return `
+            <div class="mahasiswa-card">
+                <h2>${mahasiswa.nama}</h2>
+                <p>NIM: ${mahasiswa.nim}</p>
+                <p>Nilai: ${mahasiswa.getNilai()}</p>
+            </div>
+        `;
+    }
+}
+
+class MahasiswaController {
+    constructor(model, view) {
+        this.model = model;
+        this.view = new view;
+    }
+
+    tampilkanMahasiswa() {
+        const mahasiswa = new this.model("Budi", "123456", 85);
+        document.getElementById("output").innerHTML = this.view.render(mahasiswa);
+    }
+
+    ubahNilai(nama, nim, nilaiBaru) {
+        const mahasiswa = new this.model(nama, nim, 0);
+        mahasiswa.setNilai(nilaiBaru);
+        console.log(`${nama} memiliki nilai baru: ${mahasiswa.getNilai()}`);
+    }
+}
+
+// Inisialisasi dan Penggunaan
+const mahasiswaController = new MahasiswaController(Mahasiswa, MahasiswaView);
+mahasiswaController.tampilkanMahasiswa();
+mahasiswaController.ubahNilai("Budi", "123456", 95);
+
+=====================================================================================================
+<body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahasiswa App</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div id="output"></div> 
+    <script src="script.js"></script> 
+</body>
+</html>
