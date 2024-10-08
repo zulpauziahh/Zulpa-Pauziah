@@ -1,0 +1,76 @@
+class Orang {
+    constructor(nama, alamat) {
+        this.nama = nama;
+        this.alamat = alamat;
+    }
+
+    tampilkanInformasi() {
+        console.log(`Nama: ${this.nama}, Asal: ${this.alamat}`);
+    }
+}
+class biasa extends Orang {
+    constructor(nama, alamat) {
+        this.nama = nama;
+        this.alamat = alamat;
+    }
+
+    tampilkanInformasi() {
+        console.log(`Nama: ${this.nama}, Alamat: ${this.alamat}`);
+    }
+}
+// Definisi kelas turunan
+class Mahasiswa extends Orang {
+    constructor(nama, alamat, nim) {
+        super(nama, alamat); // Memanggil konstruktor kelas induk
+        this.nim = nim;
+    }
+
+    tampilkanInformasi() {
+        super.tampilkanInformasi(); // Memanggil metode dari kelas induk
+        console.log(`NIM: ${this.nim}`);
+    }
+}
+
+// Penggunaan kelas turunan
+const mahasiswa = new Mahasiswa("Zulpa", "Gunung Putri", "202301110025");
+const orang = new Orang("Ahraou", "Maroko Tauotani");
+mahasiswa.tampilkanInformasi();
+orang.tampilkanInformasi();
+
+========================================================================================================================================
+
+// Definisi kelas induk
+class Orang {
+    tampilkanPeran() {
+        console.log("Peran: Orang biasa");
+    }
+}
+
+// Definisi kelas turunan
+class Mahasiswa extends Orang {
+    tampilkanPeran() {
+        console.log("Peran: Mahasiswa");
+    }
+}
+
+class Dosen extends Orang {
+    tampilkanPeran() {
+        console.log("Peran: Dosen");
+    }
+}
+class AsistenDosen extends Orang{
+    tampilkanPeran() {
+        console.log("Peran: Asisten Dosen");
+    }
+}
+
+// Menggunakan polimorfisme
+const orang = new Orang();
+const mahasiswa = new Mahasiswa();
+const dosen = new Dosen();
+const asistenDosen = new AsistenDosen();
+
+orang.tampilkanPeran();    // Output: Peran: Orang biasa
+mahasiswa.tampilkanPeran(); // Output: Peran: Mahasiswa
+dosen.tampilkanPeran();     // Output: Peran: Dosen
+asistenDosen.tampilkanPeran();
