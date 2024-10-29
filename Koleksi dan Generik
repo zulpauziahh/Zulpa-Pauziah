@@ -1,0 +1,82 @@
+KOLEKSI
+// Inisialisasi List
+let listMahasiswa = ["Bapak", "Mamah", "Abang"];
+
+// CREATE - Menambahkan elemen baru
+listMahasiswa.push("Adik");
+console.log("CREATE:", listMahasiswa); // Output: ["Bapak", "Mamah", "Abang", "Adik"]
+
+// READ - Membaca semua elemen di list
+console.log("READ:", listMahasiswa); // Output: ["Bapak", "Mamah", "Abang", "Adik"]
+
+// UPDATE - Mengubah elemen tertentu
+let indexList = listMahasiswa.indexOf("Mamah");
+if (indexList !== -1) {
+  listMahasiswa[indexList] = "Ibu";
+}
+console.log("UPDATE:", listMahasiswa); // Output: ["Bapak", "Mamah", "Abang", "Adik"]
+
+// DELETE - Menghapus elemen tertentu
+indexList = listMahasiswa.indexOf("Abang");
+if (indexList !== -1) {
+  listMahasiswa.splice(indexList, 1);
+}
+console.log("DELETE:", listMahasiswa); // Output: ["Bapak", "Mamah", "Adik"]
+console.log("====================");
+
+// Inisialisasi Set
+let setMahasiswa = new Set(["Bapak", "Mamah", "Abang"]);
+
+// CREATE - Menambahkan elemen baru
+setMahasiswa.add("Adik");
+console.log("CREATE:", Array.from(setMahasiswa)); // Output: ["Bapak", "Mamah", "Abang", "Adik"]
+
+// READ - Membaca semua elemen di Set
+console.log("READ:", Array.from(setMahasiswa)); // Output: ["Bapak", "Mamah", "Abang", "Adik"]
+
+// UPDATE - Menghapus elemen lama dan menambahkan elemen baru
+if (setMahasiswa.has("Mamah")) {
+  setMahasiswa.delete("Mamah");
+  setMahasiswa.add("Ibu");
+}
+console.log("UPDATE:", Array.from(setMahasiswa)); // Output: ["Bapak", "Ibu", "Abang", "Adik"]
+
+// DELETE - Menghapus elemen tertentu
+setMahasiswa.delete("Abang");
+console.log("DELETE:", Array.from(setMahasiswa)); // Output: ["Bapak", "Ibu", "Adik"]
+console.log("====================");
+
+// Inisialisasi Map
+let mapMahasiswa = new Map([["Bapak", 45], ["Mamah", 40], ["Abang", 20]]);
+
+// CREATE - Menambahkan elemen baru
+mapMahasiswa.set("Adik", 10);
+console.log("CREATE:", Array.from(mapMahasiswa)); // Output: [["Bapak", 45], ["Mamah", 40], ["Abang", 20], ["Adik", 10]]
+
+// READ - Membaca semua elemen di Map
+console.log("READ:", Array.from(mapMahasiswa)); // Output: [["Bapak", 45], ["Mamah", 40], ["Abang", 20], ["Adik", 10]]
+
+// UPDATE - Mengubah nilai tertentu
+if (mapMahasiswa.has("Mamah")) {
+  mapMahasiswa.set("Mamah", 42);
+}
+console.log("UPDATE:", Array.from(mapMahasiswa)); // Output: [["Bapak", 45], ["Mamah", 42], ["Abang", 20], ["Adik", 10]]
+
+// DELETE - Menghapus elemen tertentu
+mapMahasiswa.delete("Abang");
+console.log("DELETE:", Array.from(mapMahasiswa)); // Output: [["Bapak", 45], ["Mamah", 42], ["Adik", 10]]
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+GENERIK
+// Fungsi generik menggunakan pola
+function getElementAtIndex(array, index) {
+    if (index >= 0 && index < array.length) {
+        return array[index];
+    }
+    throw new Error("Indeks di luar jangkauan");
+}
+
+let angka = [16, 14, 26];
+let kata = ["Lima", "tujuh", "dua"];
+
+console.log(getElementAtIndex(angka, 2)); // Output: 26
+console.log(getElementAtIndex(kata, 1)); // Output: "tujuh"
