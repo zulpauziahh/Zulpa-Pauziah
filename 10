@@ -1,57 +1,68 @@
-<div id="content">halo</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+</head>
+<body>
+  <div id="content">halo</div>
 
-<script>
-  const pbo = {
-    model: {
-      mahasiswa: [
-        { username: 'zulpa', pin: 'zlp*123#' },
-      ],
-    },
-    services: {
-      getter: function () { alert('getter'); },
-      setter: function () { alert('setter'); },
-    },
-    view: {
-      signform: function () {
-        return `
-          username <input type='text' value='' id='username'><br/>
-          pin <input type='password' value='' id='pin'><br/>
-          <button id='login'>Login</button><br/>
-          <button id='cancel'>Cancel</button><br/>
-        `;
+  <script>
+    const pbo = {
+      model: {
+        mahasiswa: [
+          { username: 'zulpa', pin: 'zlp*123#' },
+        ],
       },
-    },
-    controller: {
-      signin: function () {
-        document.getElementById('login').onclick = function () {
-          const username = document.getElementById('username').value;
-          const pin = document.getElementById('pin').value;
+      services: {
+        getter: function () { alert('getter'); },
+        setter: function () { alert('setter'); },
+      },
+      view: {
+        signform: function () {
+          return `
+            username: <input type='text' value='' id='username'><br/>
+            pin: <input type='password' value='' id='pin'><br/>
+            <button id='login'>Login</button><br/>
+            <button id='cancel'>Cancel</button><br/>
+          `;
+        },
+      },
+      controller: {
+        signin: function () {
+          document.getElementById('login').onclick = function () {
+            const username = document.getElementById('username').value;
+            const pin = document.getElementById('pin').value;
 
-          // Cek username dan pin
-          const user = pbo.model.mahasiswa.find(
-            (mhs) => mhs.username === username && mhs.pin === pin
-          );
+            // Cek username dan pin
+            const user = pbo.model.mahasiswa.find(
+              (mhs) => mhs.username === username && mhs.pin === pin
+            );
 
-          if (user) {
-            alert('Login berhasil!');
-          } else {
-            alert('Login gagal! Username atau PIN salah.');
-          }
-        };
+            if (user) {
+              alert('Login berhasil!');
+            } else {
+              alert('Login gagal! Username atau PIN salah.');
+            }
+          };
+        },
+        signform: function () {
+          document.getElementById('content').innerHTML = pbo.view.signform();
+          this.signin();
+          this.cancel();
+        },
+        cancel: function () {
+          document.getElementById('cancel').onclick = function () {
+            document.getElementById('username').value = '';
+            document.getElementById('pin').value = '';
+          };
+        },
       },
-      signform: function () {
-        document.getElementById('content').innerHTML = pbo.view.signform();
-        this.signin();
-        this.cancel();
-      },
-      cancel: function () {
-        document.getElementById('cancel').onclick = function () {
-          document.getElementById('username').value = '';
-          document.getElementById('pin').value = '';
-        };
-      },
-    },
-  };
+    };
 
-  pbo.controller.signform();
-</script>
+    // Menampilkan form login
+    pbo.controller.signform();
+  </script>
+</body>
+</html>
