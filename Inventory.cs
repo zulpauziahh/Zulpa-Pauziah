@@ -2,31 +2,48 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace InventoryApp
 {
     public partial class MainWindow : Window
     {
-        private List<Barang> daftarBarang = new List<Barang>();
+        ObservableCollection<Barang> daftarBarang = new ObservableCollection<Barang>();
 
         public MainWindow()
         {
             InitializeComponent();
+            dataGridBarang.ItemsSource = daftarBarang;
         }
 
         private void Simpan_Click(object sender, RoutedEventArgs e)
         {
-            Barang b = new Barang()
+            if (string.IsNullOrWhiteSpace(txtKode.Text)) return;
+
+            var existing = daftarBarang.FirstOrDefault(b => b.KodeBarang == txtKode.Text);
+            if (existing != null)
             {
-                KodeBarang = txtKode.Text,
-                NamaBarang = txtNama.Text,
-                Kategori = txtKategori.Text,
-                Jumlah = int.Parse(txtJumlah.Text),
-                Harga = decimal.Parse(txtHarga.Text)
-            };
-            daftarBarang.Add(b);
-            MessageBox.Show("Barang disimpan.");
-            KosongkanForm();
+                MessageBox.Show("Kode barang sudah ada.");
+                return;
+            }
+
+            if (int.TryParse(txtJumlah.Text, out int jumlah) && decimal.TryParse(txtHarga.Text, out decimal harga))
+            {
+                daftarBarang.Add(new Barang
+                {
+                    KodeBarang = txtKode.Text,
+                    NamaBarang = txtNama.Text,
+                    Kategori = txtKategori.Text,
+                    Jumlah = jumlah,
+                    Harga = harga
+                });
+                KosongkanForm();
+            }
+            else
+            {
+                MessageBox.Show("Jumlah dan Harga harus berupa angka.");
+            }
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
@@ -36,9 +53,26 @@ namespace InventoryApp
             {
                 barang.NamaBarang = txtNama.Text;
                 barang.Kategori = txtKategori.Text;
-                barang.Jumlah = int.Parse(txtJumlah.Text);
-                barang.Harga = decimal.Parse(txtHarga.Text);
-                MessageBox.Show("Barang diperbarui.");
+
+                if (int.TryParse(txtJumlah.Text, out int jumlah)) barang.Jumlah = jumlah;
+                if (decimal.TryParse(txtHarga.Text, out decimal harga)) barang.Harga = harga;
+
+                dataGridBarang.Items.Refresh();
+                KosongkanForm();
+            }
+            else
+            {
+                MessageBox.Show("Barang tidak ditemukan.");
+            }
+        }
+
+        private void Hapus_Click(object sender, RoutedEventArgs e)
+        {
+            var barang = daftarBarang.FirstOrDefault(b => b.KodeBarang == txtKode.Text);
+            if (barang != null)
+            {
+                daftarBarang.Remove(barang);
+                KosongkanForm();
             }
             else
             {
@@ -49,74 +83,76 @@ namespace InventoryApp
         private void BarangMasuk_Click(object sender, RoutedEventArgs e)
         {
             var barang = daftarBarang.FirstOrDefault(b => b.KodeBarang == txtKode.Text);
-            if (barang != null)
+            if (barang != null && int.TryParse(txtJumlah.Text, out int jumlahMasuk))
             {
-                int masuk = int.Parse(txtJumlah.Text);
-                barang.Jumlah += masuk;
-                MessageBox.Show("Stok barang bertambah.");
+                barang.Jumlah += jumlahMasuk;
+                dataGridBarang.Items.Refresh();
+                KosongkanForm();
             }
             else
             {
-                MessageBox.Show("Barang tidak ditemukan.");
+                MessageBox.Show("Barang tidak ditemukan atau jumlah tidak valid.");
             }
         }
 
         private void BarangKeluar_Click(object sender, RoutedEventArgs e)
         {
             var barang = daftarBarang.FirstOrDefault(b => b.KodeBarang == txtKode.Text);
-            if (barang != null)
+            if (barang != null && int.TryParse(txtJumlah.Text, out int jumlahKeluar))
             {
-                int keluar = int.Parse(txtJumlah.Text);
-                if (barang.Jumlah >= keluar)
+                if (barang.Jumlah >= jumlahKeluar)
                 {
-                    barang.Jumlah -= keluar;
-                    MessageBox.Show("Barang berhasil keluar.");
+                    barang.Jumlah -= jumlahKeluar;
+                    dataGridBarang.Items.Refresh();
+                    KosongkanForm();
                 }
                 else
                 {
-                    MessageBox.Show("Stok tidak mencukupi.");
+                    MessageBox.Show("Stok tidak cukup.");
                 }
             }
             else
             {
-                MessageBox.Show("Barang tidak ditemukan.");
+                MessageBox.Show("Barang tidak ditemukan atau jumlah tidak valid.");
             }
         }
 
         private void Cari_Click(object sender, RoutedEventArgs e)
         {
-            string keyword = txtKode.Text.ToLower();
-            var hasil = daftarBarang.FirstOrDefault(b =>
+            string keyword = txtCari.Text.ToLower();
+            var hasil = daftarBarang.Where(b =>
                 b.KodeBarang.ToLower().Contains(keyword) ||
-                b.NamaBarang.ToLower().Contains(keyword));
-            if (hasil != null)
-            {
-                MessageBox.Show($"Ditemukan:\nKode: {hasil.KodeBarang}\nNama: {hasil.NamaBarang}\nJumlah: {hasil.Jumlah}\nHarga: {hasil.Harga:C}");
-            }
-            else
-            {
-                MessageBox.Show("Barang tidak ditemukan.");
-            }
+                b.NamaBarang.ToLower().Contains(keyword) ||
+                b.Kategori.ToLower().Contains(keyword)).ToList();
+
+            dataGridBarang.ItemsSource = hasil;
         }
 
         private void Laporan_Click(object sender, RoutedEventArgs e)
         {
-            string laporan = "Laporan Stok Akhir:\n";
+            string laporan = "Laporan Stok Akhir:\n\n";
+            decimal totalNilai = 0;
+
             foreach (var b in daftarBarang)
             {
-                decimal total = b.Harga * b.Jumlah;
-                laporan += $"Kode: {b.KodeBarang}, Nama: {b.NamaBarang}, Stok: {b.Jumlah}, Harga: {b.Harga:C}, Total: {total:C}\n";
+                decimal nilai = b.Jumlah * b.Harga;
+                totalNilai += nilai;
+                laporan += $"{b.KodeBarang} - {b.NamaBarang} - {b.Jumlah} x {b.Harga:C} = {nilai:C}\n";
             }
+
+            laporan += $"\nTotal Nilai Stok: {totalNilai:C}";
             MessageBox.Show(laporan);
         }
 
         private void KosongkanForm()
         {
-            txtKode.Clear();
-            txtNama.Clear();
-            txtKategori.Clear();
-            txtJumlah.Clear();
-            txtHarga.Clear();
+            txtKode.Text = "";
+            txtNama.Text = "";
+            txtKategori.Text = "";
+            txtJumlah.Text = "";
+            txtHarga.Text = "";
+            txtKode.Focus();
         }
     }
-}
+
+    
