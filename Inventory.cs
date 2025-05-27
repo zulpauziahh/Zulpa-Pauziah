@@ -16,17 +16,24 @@ namespace InventoryApp
 
         private void Simpan_Click(object sender, RoutedEventArgs e)
         {
-            Barang b = new Barang
+            try
             {
-                KodeBarang = txtKode.Text,
-                NamaBarang = txtNama.Text,
-                Kategori = txtKategori.Text,
-                Jumlah = int.Parse(txtJumlah.Text)
-            };
+                Barang b = new Barang
+                {
+                    KodeBarang = txtKode.Text,
+                    NamaBarang = txtNama.Text,
+                    Kategori = txtKategori.Text,
+                    Jumlah = int.Parse(txtJumlah.Text)
+                };
 
-            daftarBarang.Add(b);
-            MessageBox.Show("Barang berhasil disimpan.");
-            ClearForm();
+                daftarBarang.Add(b);
+                MessageBox.Show("Barang berhasil disimpan.");
+                ClearForm();
+            }
+            catch
+            {
+                MessageBox.Show("Input tidak valid.");
+            }
         }
 
         private void TambahStok_Click(object sender, RoutedEventArgs e)
@@ -34,8 +41,15 @@ namespace InventoryApp
             var barang = daftarBarang.FirstOrDefault(b => b.KodeBarang == txtMasukKode.Text);
             if (barang != null)
             {
-                barang.Jumlah += int.Parse(txtJumlahMasuk.Text);
-                MessageBox.Show("Stok berhasil ditambahkan.");
+                if (int.TryParse(txtJumlahMasuk.Text, out int tambah))
+                {
+                    barang.Jumlah += tambah;
+                    MessageBox.Show("Stok berhasil ditambahkan.");
+                }
+                else
+                {
+                    MessageBox.Show("Jumlah Masuk tidak valid.");
+                }
             }
             else
             {
@@ -46,18 +60,23 @@ namespace InventoryApp
         private void KurangiStok_Click(object sender, RoutedEventArgs e)
         {
             var barang = daftarBarang.FirstOrDefault(b => b.KodeBarang == txtKeluarKode.Text);
-            int keluar = int.Parse(txtJumlahKeluar.Text);
-
             if (barang != null)
             {
-                if (barang.Jumlah >= keluar)
+                if (int.TryParse(txtJumlahKeluar.Text, out int keluar))
                 {
-                    barang.Jumlah -= keluar;
-                    MessageBox.Show("Stok berhasil dikurangi.");
+                    if (barang.Jumlah >= keluar)
+                    {
+                        barang.Jumlah -= keluar;
+                        MessageBox.Show("Stok berhasil dikurangi.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Stok tidak cukup.");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Stok tidak cukup.");
+                    MessageBox.Show("Jumlah Keluar tidak valid.");
                 }
             }
             else
