@@ -1,30 +1,55 @@
 <Window x:Class="InventoryApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Inventory Alat Tulis" Height="500" Width="400">
+        Title="Inventory Alat Tulis" Height="600" Width="1000">
     <Grid Margin="10">
-        <StackPanel>
-            <TextBlock Text="Kode Barang"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Form Input -->
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Text="Kode Barang" Margin="0,5"/>
             <TextBox x:Name="txtKode"/>
 
-            <TextBlock Text="Nama Barang"/>
+            <TextBlock Text="Nama Barang" Margin="0,5"/>
             <TextBox x:Name="txtNama"/>
 
-            <TextBlock Text="Kategori"/>
+            <TextBlock Text="Kategori" Margin="0,5"/>
             <TextBox x:Name="txtKategori"/>
 
-            <TextBlock Text="Jumlah"/>
+            <TextBlock Text="Jumlah" Margin="0,5"/>
             <TextBox x:Name="txtJumlah"/>
 
-            <TextBlock Text="Harga"/>
+            <TextBlock Text="Harga" Margin="0,5"/>
             <TextBox x:Name="txtHarga"/>
 
             <Button Content="Simpan Barang" Margin="0,10,0,0" Click="Simpan_Click"/>
-            <Button Content="Edit Barang" Click="Edit_Click"/>
-            <Button Content="Transaksi Masuk" Click="BarangMasuk_Click"/>
-            <Button Content="Transaksi Keluar" Click="BarangKeluar_Click"/>
-            <Button Content="Cari Barang" Click="Cari_Click"/>
-            <Button Content="Laporan Stok Akhir" Click="Laporan_Click"/>
+            <Button Content="Edit Barang" Margin="0,5,0,0" Click="Edit_Click"/>
+            <Button Content="Hapus Barang" Margin="0,5,0,0" Click="Hapus_Click"/>
+            <Button Content="Transaksi Masuk" Margin="0,5,0,0" Click="BarangMasuk_Click"/>
+            <Button Content="Transaksi Keluar" Margin="0,5,0,0" Click="BarangKeluar_Click"/>
+            <Button Content="Laporan Stok Akhir" Margin="0,5,0,0" Click="Laporan_Click"/>
+        </StackPanel>
+
+        <!-- Data & Pencarian -->
+        <StackPanel Grid.Column="1" Margin="10">
+            <TextBlock Text="Pencarian Barang" FontWeight="Bold"/>
+            <DockPanel Margin="0,5">
+                <TextBox x:Name="txtCari" Width="200" Margin="0,0,10,0"/>
+                <Button Content="Cari" Click="Cari_Click" Width="80"/>
+            </DockPanel>
+
+            <DataGrid x:Name="dataGridBarang" AutoGenerateColumns="False" Height="400" Margin="0,10,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Kode" Binding="{Binding KodeBarang}"/>
+                    <DataGridTextColumn Header="Nama" Binding="{Binding NamaBarang}"/>
+                    <DataGridTextColumn Header="Kategori" Binding="{Binding Kategori}"/>
+                    <DataGridTextColumn Header="Jumlah" Binding="{Binding Jumlah}"/>
+                    <DataGridTextColumn Header="Harga" Binding="{Binding Harga}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Window>
