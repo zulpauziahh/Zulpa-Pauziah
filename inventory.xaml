@@ -1,46 +1,30 @@
 <Window x:Class="InventoryApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        Title="Inventory Alat Tulis" Height="550" Width="800">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Inventory Alat Tulis" Height="500" Width="400">
     <Grid Margin="10">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <TextBlock Text="Input Data Barang" FontSize="20" Margin="0,0,0,10"/>
+        <StackPanel>
+            <TextBlock Text="Kode Barang"/>
+            <TextBox x:Name="txtKode"/>
 
-                <TextBlock Text="Kode Barang"/>
-                <TextBox x:Name="txtKode" Margin="0,5"/>
+            <TextBlock Text="Nama Barang"/>
+            <TextBox x:Name="txtNama"/>
 
-                <TextBlock Text="Nama Barang"/>
-                <TextBox x:Name="txtNama" Margin="0,5"/>
+            <TextBlock Text="Kategori"/>
+            <TextBox x:Name="txtKategori"/>
 
-                <TextBlock Text="Kategori"/>
-                <TextBox x:Name="txtKategori" Margin="0,5"/>
+            <TextBlock Text="Jumlah"/>
+            <TextBox x:Name="txtJumlah"/>
 
-                <TextBlock Text="Jumlah"/>
-                <TextBox x:Name="txtJumlah" Margin="0,5"/>
+            <TextBlock Text="Harga"/>
+            <TextBox x:Name="txtHarga"/>
 
-                <Button Content="Simpan Barang" Margin="0,10" Click="Simpan_Click"/>
-
-                <TextBlock Text="Transaksi Barang Masuk" FontWeight="Bold" Margin="0,20,0,0"/>
-                <TextBlock Text="Kode Barang"/>
-                <TextBox x:Name="txtMasukKode" Margin="0,5"/>
-                <TextBlock Text="Jumlah Masuk"/>
-                <TextBox x:Name="txtJumlahMasuk" Margin="0,5"/>
-                <Button Content="Tambah Stok" Click="TambahStok_Click"/>
-
-                <TextBlock Text="Transaksi Barang Keluar" FontWeight="Bold" Margin="0,20,0,0"/>
-                <TextBlock Text="Kode Barang"/>
-                <TextBox x:Name="txtKeluarKode" Margin="0,5"/>
-                <TextBlock Text="Jumlah Keluar"/>
-                <TextBox x:Name="txtJumlahKeluar" Margin="0,5"/>
-                <Button Content="Kurangi Stok" Click="KurangiStok_Click"/>
-
-                <TextBlock Text="Pencarian Barang" FontWeight="Bold" Margin="0,20,0,0"/>
-                <TextBlock Text="Nama/Kode"/>
-                <TextBox x:Name="txtCari" Margin="0,5"/>
-                <Button Content="Cari Barang" Click="Cari_Click"/>
-
-                <Button Content="Lihat Laporan Stok Akhir" Margin="10,20,0,0" Click="Laporan_Click"/>
-            </StackPanel>
-        </ScrollViewer>
+            <Button Content="Simpan Barang" Margin="0,10,0,0" Click="Simpan_Click"/>
+            <Button Content="Edit Barang" Click="Edit_Click"/>
+            <Button Content="Transaksi Masuk" Click="BarangMasuk_Click"/>
+            <Button Content="Transaksi Keluar" Click="BarangKeluar_Click"/>
+            <Button Content="Cari Barang" Click="Cari_Click"/>
+            <Button Content="Laporan Stok Akhir" Click="Laporan_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
